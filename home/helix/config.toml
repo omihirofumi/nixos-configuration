@@ -22,12 +22,12 @@ x = "extend_line_below"
 X = "extend_line_above"
 space.g.f = ":sh gh browse \"%{buffer_name}\""
 space.g.s = ":sh gh browse \"%{buffer_name}:%{selection_line_start}-%{selection_line_end}\""
-space.g.c = ":sh printf '%s:%s-%s\n' \"%{buffer_name}\" \"%{selection_line_start}\" \"%{selection_line_end}\" | pbcopy"
+space.g.c = ":sh echo \"%{buffer_name}:%{selection_line_start}-%{selection_line_end}\" | pbcopy"
 
 [keys.select]
 space.g.f = ":sh gh browse \"%{buffer_name}\""
 space.g.s = ":sh gh browse \"%{buffer_name}:%{selection_line_start}-%{selection_line_end}\""
-space.g.c = ":sh printf '%s:%s-%s\n' \"%{buffer_name}\" \"%{selection_line_start}\" \"%{selection_line_end}\" | pbcopy"
+space.g.c = ":sh echo \"%{buffer_name}:%{selection_line_start}-%{selection_line_end}\" | pbcopy"
 
 [editor.indent-guides]
 render = true
