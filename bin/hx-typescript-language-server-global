@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+global_node_modules="$(npm root -g)"
+export NODE_PATH="${global_node_modules}${NODE_PATH:+:${NODE_PATH}}"
+exec typescript-language-server --stdio

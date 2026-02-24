@@ -7,11 +7,14 @@ command = "jdtls"
 args = ["--java-executable", "/Users/hirofumiomi/.local/share/mise/installs/java/21/bin/java"]
 
 [language-server.angular-ls]
-command = "ngserver"
-
-args = ["--stdio"]
+command = "/Users/hirofumi.omi/dotfiles/bin/hx-ngserver-global"
+required-root-patterns = ["angular.json", "project.json"]
 
 file-types = ["ts", "typescript", "html"]
+
+[language-server.typescript-language-server]
+command = "/Users/hirofumi.omi/dotfiles/bin/hx-typescript-language-server-global"
+required-root-patterns = ["package.json", "tsconfig.json", "jsconfig.json"]
 
 [[language]]
 name = "typescript"
