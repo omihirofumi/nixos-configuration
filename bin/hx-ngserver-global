@@ -1,8 +1,0 @@
-#!/usr/bin/env bash
-set -euo pipefail
-
-global_node_modules="$(npm root -g)"
-exec ngserver \
-  --stdio \
-  --tsProbeLocations "$global_node_modules" \
-  --ngProbeLocations "$global_node_modules"

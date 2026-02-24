@@ -41,6 +41,7 @@
   imports = [
     ./zsh.nix
     ./git.nix
+    ./helix.nix
   ];
 
   home.file.".config/negligible.omp.json".source = ./negligible.omp.json;
@@ -60,11 +61,6 @@
     [global]
     hide_env_diff = true
   '';
-
-  xdg.configFile."helix" = {
-    source = ./helix;
-    recursive = true;
-  };
 
   xdg.configFile."jj" = {
     source = ./jj;
