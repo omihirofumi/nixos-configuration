@@ -22,10 +22,12 @@ x = "extend_line_below"
 X = "extend_line_above"
 space.g.f = ":sh gh browse \"%{buffer_name}\""
 space.g.s = ":sh gh browse \"%{buffer_name}:%{selection_line_start}-%{selection_line_end}\""
+space.y.d = ":yank-diagnostics"
 
 [keys.select]
 space.g.f = ":sh gh browse \"%{buffer_name}\""
 space.g.s = ":sh gh browse \"%{buffer_name}:%{selection_line_start}-%{selection_line_end}\""
+space.y.d = ":yank-diagnostics"
 
 [editor.indent-guides]
 render = true
