@@ -1,19 +1,15 @@
 { pkgs, USERNAME, HOSTNAME, ... }:
 
 {
-
-  nix.settings.extra-experimental-features = [ "nix-command" "flakes" ]; 
-
+  nix.settings.extra-experimental-features = [ "nix-command" "flakes" ];
   system.primaryUser = USERNAME;
-
   nix.enable = false;
 
   users.users.${USERNAME} = {
     home = "/Users/${USERNAME}";
     shell = pkgs.zsh;
-  }
-;
-  # macOS defaults
+  };
+
   system.defaults = {
     dock.autohide = true;
     dock.show-recents = false;
@@ -31,6 +27,14 @@
       "com.apple.trackpad.scaling" = 3.0;
       AppleShowAllExtensions = true;
     };
+
+    CustomUserPreferences = {
+      "com.mitchellh.ghostty" = {
+        NSUserKeyEquivalents = {
+          "Hide Ghostty" = "@~$h";
+        };
+      };
+    };
   };
 
   homebrew = {
@@ -39,7 +43,10 @@
       autoUpdate = true;
       upgrade = true;
     };
-    casks = [ "deskpad" "ghostty" "homerow" "linear-linear" "raindropio" "raycast" "karabiner-elements" "google-chrome" "chatgpt"];
+    casks = [
+      "deskpad" "ghostty" "homerow" "linear-linear" "raindropio"
+      "raycast" "karabiner-elements" "google-chrome" "chatgpt"
+    ];
     brews = [ "mole" ];
   };
 
@@ -53,8 +60,6 @@
     rancher
   ];
 
-
   home-manager.backupFileExtension = "bak";
-
   system.stateVersion = 5;
 }
