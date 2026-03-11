@@ -15,3 +15,6 @@ change_id = "#ff1525"
 
 [aliases]
 aicommit = ["util", "exec", "--", "codex", "--dangerously-bypass-approvals-and-sandbox", "exec", "Review the diff, then commit. Follow conventional commits. Do nothing else."]
+
+[remotes.origin]
+auto-track-created-bookmarks = "*"
