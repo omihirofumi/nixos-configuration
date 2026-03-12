@@ -14,7 +14,7 @@ diff-formatter = ["difft", "--color=always", "$left", "$right"]
 change_id = "#ff1525"
 
 [aliases]
-aicommit = ["util", "exec", "--", "codex", "--dangerously-bypass-approvals-and-sandbox", "exec", "Review the diff, then commit. Follow conventional commits. Do nothing else."]
+aicommit = ["util", "exec", "--", "codex", "--dangerously-bypass-approvals-and-sandbox", "exec", "Review the diff, then commit and use `jj commit -m 'message'`. Follow conventional commits. Do nothing else."]
 clone = ["util", "exec", "--", "zsh", "-ic", """
 cmd="${1:-}"
 shift || true
