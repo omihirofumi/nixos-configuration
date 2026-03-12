@@ -36,6 +36,7 @@
     tldr
     nb
     difftastic
+    zls
   ];
 
   imports = [
