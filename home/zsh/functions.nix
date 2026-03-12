@@ -167,7 +167,7 @@
   }
 
   function jclone-fzf () {
-    local current_name selected_name
+    local current_name fzf_output query_line selected_name
 
     jj root >/dev/null 2>&1 || {
       echo "jj リポジトリの中で実行してください" >&2
@@ -175,12 +175,21 @@
     }
 
     current_name=$(_jclone_default_name)
-    selected_name=$(
+    fzf_output=$(
       _jclone_candidates | ${pkgs.fzf}/bin/fzf --reverse \
+        --print-query \
         --prompt="jclone > " \
         --query "$current_name" \
-        --header="Enter で clone / 任意名は jclone <name>"
+        --header="候補選択で clone / 任意入力して Enter で新規 clone"
     )
+
+    [ -n "$fzf_output" ] || return 1
+
+    query_line=$(printf '%s\n' "$fzf_output" | sed -n '1p')
+    selected_name=$(printf '%s\n' "$fzf_output" | sed -n '2p')
+    if [ -z "$selected_name" ]; then
+      selected_name="$query_line"
+    fi
 
     [ -n "$selected_name" ] || return 1
     jclone "$selected_name"
@@ -275,15 +284,7 @@ EOF
     zle reset-prompt
   }
   zle -N jclone-fzf-widget
-  bindkey '^X^J' jclone-fzf-widget
-
-  function jclone-name-widget () {
-    zle -I
-    jclone-name
-    zle reset-prompt
-  }
-  zle -N jclone-name-widget
-  bindkey '^X^C' jclone-name-widget
+  bindkey '^Xj' jclone-fzf-widget
 
   function jmain-widget () {
     zle -I
@@ -291,7 +292,7 @@ EOF
     zle reset-prompt
   }
   zle -N jmain-widget
-  bindkey '^X^X' jmain-widget
+  bindkey '^Xx' jmain-widget
 
   function jclone-gc-widget () {
     zle -I
@@ -299,8 +300,7 @@ EOF
     zle reset-prompt
   }
   zle -N jclone-gc-widget
-  bindkey '^Xg' jclone-gc-widget
-  bindkey '^X^G' jclone-gc-widget
+  bindkey '^Xd' jclone-gc-widget
 
   # fzf x ghq
   function fzf-src () {
