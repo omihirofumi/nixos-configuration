@@ -107,7 +107,7 @@
   }
 
   function jclone () {
-    local repo_root source_git_root repo_parent repo_name raw_name suffix dest_dir origin_url clone_branch clone_source
+    local repo_root source_git_root repo_parent repo_name base_dir raw_name suffix dest_dir origin_url clone_branch clone_source
 
     repo_root=$(jj root 2>/dev/null) || {
       echo "jj リポジトリの中で実行してください" >&2
@@ -133,8 +133,9 @@
       return 1
     fi
 
-    repo_parent=$(dirname "$repo_root")
-    repo_name=$(basename "$repo_root")
+    base_dir=$(_jclone_base_dir) || return 1
+    repo_parent=$(dirname "$base_dir")
+    repo_name=$(basename "$base_dir")
     dest_dir="$repo_parent/$repo_name""__clone__""$suffix"
 
     if [ -e "$dest_dir" ]; then
@@ -220,19 +221,24 @@
   }
 
   function jclone-gc () {
-    local base_dir selected_dirs current_pwd reply dir
+    local base_dir selected_dirs current_pwd reply dir mode
 
     base_dir=$(_jclone_base_dir) || {
       echo "jj リポジトリの中で実行してください" >&2
       return 1
     }
 
-    selected_dirs=$(
-      _jclone_clone_dirs | ${pkgs.fzf}/bin/fzf --multi --reverse \
-        --prompt="jclone gc > " \
-        --header="Tab で複数選択 / Enter で削除候補" \
-        --preview 'printf "%s\n\n" {}; git -C {} status --short --branch 2>/dev/null | head -80'
-    )
+    mode="$1"
+    if [ "$mode" = "all" ]; then
+      selected_dirs=$(_jclone_clone_dirs)
+    else
+      selected_dirs=$(
+        _jclone_clone_dirs | ${pkgs.fzf}/bin/fzf --multi --reverse \
+          --prompt="jclone gc > " \
+          --header="Tab で複数選択 / Enter で削除候補 / 全削除は jclone-gc all" \
+          --preview 'printf "%s\n\n" {}; git -C {} status --short --branch 2>/dev/null | head -80'
+      )
+    fi
 
     [ -n "$selected_dirs" ] || return 1
 
@@ -293,7 +299,8 @@ EOF
     zle reset-prompt
   }
   zle -N jclone-gc-widget
-  bindkey '^X^D' jclone-gc-widget
+  bindkey '^Xg' jclone-gc-widget
+  bindkey '^X^G' jclone-gc-widget
 
   # fzf x ghq
   function fzf-src () {
