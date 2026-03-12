@@ -138,6 +138,11 @@ ${zshFunctions}
       if command -v ww >/dev/null 2>&1; then
         eval "$(ww completion zsh)"
       fi
+
+      # Per-machine or untracked local overrides.
+      if [ -f "$HOME/.zshrc_local" ]; then
+        source "$HOME/.zshrc_local"
+      fi
           '';
   };
 }
