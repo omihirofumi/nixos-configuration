@@ -1,4 +1,7 @@
 { pkgs, ... }:
+let
+  zshFunctions = import ./zsh/functions.nix { inherit pkgs; };
+in
 {
   programs.zsh = {
     enable = true;
@@ -121,71 +124,7 @@
         source <(COMPLETE=zsh jj)
       fi
 
-      ######## functions ########
-
-      # fzf x ghq
-      function fzf-src () {
-        local selected_dir
-        selected_dir=$(${pkgs.ghq}/bin/ghq list -p | ${pkgs.fzf}/bin/fzf --reverse)
-        if [ -n "$selected_dir" ]; then
-          BUFFER="cd $selected_dir"
-          zle accept-line
-        fi
-        zle clear-screen
-      }
-      zle -N fzf-src
-      bindkey '^g' fzf-src
-
-      # fzf x Development
-      function fzf-dev () {
-        local selected_dir
-        selected_dir=$(find "$HOME/Development" -type d -mindepth 1 -maxdepth 3 \
-          -not -path "*/.*" \
-          -not -path "*/node_modules*" \
-          -not -path "*/target*" \
-          -not -path "*/build*" | \
-          sed "s|$HOME/||" | \
-          ${pkgs.fzf}/bin/fzf --reverse --preview "ls -la ~/{}"
-        )
-        if [ -n "$selected_dir" ]; then
-          BUFFER="cd ~/$selected_dir"
-          zle accept-line
-        fi
-        zle clear-screen
-      }
-      zle -N fzf-dev
-      bindkey '^j' fzf-dev
-
-      # pr [-a] => gh dash
-      function pr() {
-        if [ "$1" = "-a" ]; then
-          (cd "$HOME" && gh dash)
-        else
-          gh dash "$@"
-        fi
-      }
-
-      # fzf x favorite directories (~/.config/favdirs)
-      function fzf-favdir () {
-        local config_file
-        config_file="$HOME/.config/favdirs"
-
-        if [ ! -f "$config_file" ]; then
-          echo "~/.config/favdirs が見つかりません" >&2
-          return 1
-        fi
-
-        local selected_dir
-        selected_dir=$(cat "$config_file" | ${pkgs.fzf}/bin/fzf --reverse --prompt="Favorite dirs > ")
-
-        if [ -n "$selected_dir" ]; then
-          BUFFER="cd $selected_dir"
-          zle accept-line
-        fi
-        zle clear-screen
-      }
-      zle -N fzf-favdir
-      bindkey '^]' fzf-favdir
+${zshFunctions}
 
       ######## local binaries / external managed paths ########
       alias claude="$HOME/.local/bin/claude"
@@ -199,15 +138,6 @@
       if command -v ww >/dev/null 2>&1; then
         eval "$(ww completion zsh)"
       fi
-      # Allow Ctrl-z to toggle between suspend and resume
-      function Resume {
-        fg
-        zle push-input
-        BUFFER=""
-        zle accept-line
-      }
-      zle -N Resume
-      bindkey "^Z" Resume
           '';
   };
 }

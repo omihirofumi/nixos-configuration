@@ -15,6 +15,7 @@ keybind = shift+ctrl+right_bracket=next_tab
 keybind = shift+ctrl+,=move_tab:-1
 keybind = shift+ctrl+.=move_tab:+1
 keybind = shift+enter=text:\x1b\r
+keybind = unconsumed:ctrl+d=ignore
 keybind = cmd+enter=ignore
 # keybind = ctrl+j=ignore
 # 分割ペイン移動
@@ -22,4 +23,3 @@ keybind = cmd+h=goto_split:left
 keybind = cmd+j=goto_split:bottom
 keybind = cmd+k=goto_split:top
 keybind = cmd+l=goto_split:right
-
