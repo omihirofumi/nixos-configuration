@@ -49,6 +49,16 @@
     find "$repo_parent" -mindepth 1 -maxdepth 1 -type d -name "$base_name""__clone__*" | sort
   }
 
+  function _jclone_jump_dirs () {
+    local base_dir
+
+    base_dir=$(_jclone_base_dir) || return 1
+    {
+      printf '%s\n' "$base_dir"
+      _jclone_clone_dirs
+    } | awk 'NF && !seen[$0]++'
+  }
+
   function _jclone_apply_scope () {
     local base_name scope_prefix
 
@@ -278,6 +288,21 @@ $selected_dirs
 EOF
   }
 
+  function jclone-jump () {
+    local selected_dir
+
+    selected_dir=$(
+      _jclone_jump_dirs | ${pkgs.fzf}/bin/fzf --reverse \
+        --prompt="jclone dir > " \
+        --header="base repo と clone siblings を移動" \
+        --preview 'printf "%s\n\n" {}; git -C {} status --short --branch 2>/dev/null | head -80'
+    )
+
+    [ -n "$selected_dir" ] || return 1
+    cd "$selected_dir" || return 1
+    pwd
+  }
+
   function jclone-fzf-widget () {
     zle -I
     jclone-fzf
@@ -301,6 +326,14 @@ EOF
   }
   zle -N jclone-gc-widget
   bindkey '^Xd' jclone-gc-widget
+
+  function jclone-jump-widget () {
+    zle -I
+    jclone-jump
+    zle reset-prompt
+  }
+  zle -N jclone-jump-widget
+  bindkey '^Xf' jclone-jump-widget
 
   # fzf x ghq
   function fzf-src () {
