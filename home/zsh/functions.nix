@@ -99,17 +99,36 @@
     fi
   }
 
+  function _jclone_bookmark_names () {
+    jj bookmark list -a 2>/dev/null \
+      | sed -E 's/:.*$//' \
+      | sed -E 's/@[^[:space:]]+$//' \
+      | awk 'NF && !seen[$0]++'
+  }
+
+  function _jclone_resolve_branch () {
+    local raw_name unscoped_name
+
+    raw_name="$1"
+    unscoped_name=$(_jclone_unscoped_name "$raw_name")
+
+    _jclone_bookmark_names | awk -v raw="$raw_name" -v unscoped="$unscoped_name" '
+      $0 == raw { print; found=1; exit }
+      $0 == unscoped { print; found=1; exit }
+    '
+  }
+
   function _jclone_candidates () {
     local scope_prefix
     scope_prefix=$(_jclone_scope_prefix)
 
     {
       _jclone_default_name
-      jj bookmark list 2>/dev/null | sed -E 's/:.*$//'
+      _jclone_bookmark_names
     } | awk 'NF && !seen[$0]++'
     if [ -n "$scope_prefix" ]; then
       {
-        jj bookmark list 2>/dev/null | sed -E 's/:.*$//'
+        _jclone_bookmark_names
       } | awk 'NF && !seen[$0]++' | while IFS= read -r line; do
         _jclone_apply_scope "$line"
       done | awk 'NF && !seen[$0]++'
@@ -159,18 +178,15 @@
       clone_source="$repo_root"
     fi
 
-    clone_branch=$(jj bookmark list -- "$raw_name" 2>/dev/null | sed -E 's/:.*$//' | sed -n '1p')
-    if [ -z "$clone_branch" ]; then
-      clone_branch=$(jj bookmark list -- "$(_jclone_unscoped_name "$raw_name")" 2>/dev/null | sed -E 's/:.*$//' | sed -n '1p')
-    fi
+    clone_branch=$(_jclone_resolve_branch "$raw_name")
 
     if [ -n "$clone_branch" ]; then
-      git clone --single-branch --branch "$clone_branch" --no-tags --filter=blob:none "$clone_source" "$dest_dir" || return 1
+      jj git clone --fetch-tags none -b "$clone_branch" "$clone_source" "$dest_dir" || return 1
+      jj -R "$dest_dir" bookmark track "$clone_branch" --remote origin >/dev/null 2>&1 || true
+      jj -R "$dest_dir" bookmark set "$clone_branch" -r @- >/dev/null 2>&1 || true
     else
-      git clone --single-branch --no-tags --filter=blob:none "$clone_source" "$dest_dir" || return 1
+      jj git clone --fetch-tags none -b main "$clone_source" "$dest_dir" || return 1
     fi
-
-    jj git init --git-repo "$dest_dir/.git" "$dest_dir" >/dev/null || return 1
 
     cd "$dest_dir" || return 1
     pwd
