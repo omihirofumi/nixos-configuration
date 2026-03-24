@@ -39,10 +39,10 @@
       };
 
       ghq = {
-        root = "~/hobby";
+        root = "~/ghq/hobby";
 
         "https://github.com/alpdr/" = {
-          root = "~/work";
+          root = "~/ghq/work";
         };
       };
     };
