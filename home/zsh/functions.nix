@@ -353,10 +353,11 @@ EOF
 
   # fzf x ghq
   function fzf-src () {
-    local selected_dir
-    selected_dir=$(${pkgs.ghq}/bin/ghq list -p | ${pkgs.fzf}/bin/fzf --reverse)
-    if [ -n "$selected_dir" ]; then
-      BUFFER="cd $selected_dir"
+    local repo
+    repo=$(${pkgs.ghq}/bin/ghq list | ${pkgs.fzf}/bin/fzf --reverse)
+    if [ -n "$repo" ]; then
+      repo=$(${pkgs.ghq}/bin/ghq list --full-path --exact $repo)
+      BUFFER="cd $repo"
       zle accept-line
     fi
     zle clear-screen
