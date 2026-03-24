@@ -459,9 +459,13 @@ noremap miw <Esc>viw
 noremap miW <Esc>viW
 noremap mip <Esc>vip
 noremap mi( <Esc>vi(
+noremap mi) <Esc>vi)
 noremap mi{ <Esc>vi{
+noremap mi} <Esc>vi}
 noremap mi< <Esc>vi<
+noremap mi> <Esc>vi>
 noremap mi[ <Esc>vi[
+noremap mi] <Esc>vi]
 noremap mi' <Esc>vi'
 noremap mi" <Esc>vi"
 noremap mi` <Esc>vi`
