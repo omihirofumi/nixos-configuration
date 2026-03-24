@@ -31,6 +31,20 @@
       rebase = {
         autoSquash = true;
       };
+
+      url = {
+        "git@github.com:" = {
+          pushInsteadOf = "https://github.com/";
+        };
+      };
+
+      ghq = {
+        root = "~/hobby";
+
+        "https://github.com/alpdr/" = {
+          root = "~/work";
+        };
+      };
     };
   };
 
