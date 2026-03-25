@@ -9,6 +9,8 @@
 
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
+
+    jj.url = "github:jj-vcs/jj";
   };
 
   outputs = inputs@{ self, nixpkgs, nix-darwin, home-manager, ... }:
@@ -34,7 +36,7 @@
           home-manager.useUserPackages = true;
 
           home-manager.extraSpecialArgs = {
-            inherit USERNAME;
+            inherit inputs USERNAME;
           };
 
           home-manager.users.${USERNAME} = import ./home/home.nix;

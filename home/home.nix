@@ -1,4 +1,4 @@
-{ config, pkgs, USERNAME, ... }:
+{ config, pkgs, inputs, USERNAME, ... }:
 {
   home.username = USERNAME;
 
@@ -20,7 +20,7 @@
     fd
     jq
     ghq
-    jujutsu
+    inputs.jj.packages.${pkgs.system}.jujutsu
     pet
     bat
     rustup
