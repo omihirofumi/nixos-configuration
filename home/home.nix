@@ -37,6 +37,7 @@
     nb
     difftastic
     zls
+    zellij
   ];
 
   imports = [
