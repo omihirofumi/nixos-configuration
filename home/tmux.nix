@@ -22,6 +22,14 @@
       set -g pane-active-border-style fg=green
       set -g pane-border-style fg=#444444
 
+      # ESCキーの遅延をなくす
+      set -g escape-time 0
+
+      # viキーバインドでコピーモード操作
+      set -g mode-keys vi
+      bind -T copy-mode-vi v send -X begin-selection
+      bind -T copy-mode-vi y send -X copy-selection
+
       # ghosttyの透過背景をtmuxでも反映
       set -g default-terminal "tmux-256color"
       set -ga terminal-overrides ",*:Tc"
