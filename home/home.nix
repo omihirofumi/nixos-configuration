@@ -24,7 +24,6 @@
     pet
     bat
     rustup
-    direnv
     docker
     docker-buildx
     docker-compose
@@ -60,10 +59,15 @@
     recursive = true;
   };
 
-  xdg.configFile."direnv/direnv.toml".text = ''
-    [global]
-    hide_env_diff = true
-  '';
+  programs.direnv = {
+    enable = true;
+    nix-direnv.enable = true;
+    config = {
+      global = {
+        hide_env_diff = true;
+      };
+    };
+  };
 
   xdg.configFile."jj" = {
     source = ./jj;

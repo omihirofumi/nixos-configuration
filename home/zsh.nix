@@ -52,9 +52,6 @@ in
       # mise
       eval "$(${pkgs.mise}/bin/mise activate zsh)"
 
-      # direnv
-      eval "$(${pkgs.direnv}/bin/direnv hook zsh)"
-
       # oh-my-posh（設定ファイルは home-manager で ~/.config/negligible.omp.json を配布している前提）
       eval "$(${pkgs.oh-my-posh}/bin/oh-my-posh init zsh --config "$HOME/.config/negligible.omp.json")"
 
