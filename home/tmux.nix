@@ -3,6 +3,7 @@
   programs.tmux = {
     enable = true;
     prefix = "C-j";
+    mouse = true;
     extraConfig = ''
       # ウィンドウ名の自動変更を無効化
       set-option -g allow-rename off
