@@ -97,6 +97,23 @@
   zle -N fzf-favdir
   bindkey '^]' fzf-favdir
 
+  function fzf-tmux-session () {
+    tmux has-session -t main   2>/dev/null || tmux new -s main   -d
+    tmux has-session -t agent1 2>/dev/null || tmux new -s agent1 -d
+    tmux has-session -t agent2 2>/dev/null || tmux new -s agent2 -d
+    local session
+    if [ -z "$TMUX" ]; then
+      session=$(tmux ls | fzf --layout=reverse | cut -d: -f1)
+      [ -n "$session" ] && BUFFER="tmux attach -t $session"
+    else
+      session=$(tmux ls | fzf --layout=reverse | cut -d: -f1)
+      [ -n "$session" ] && BUFFER="tmux switch -t $session"
+    fi
+    zle accept-line
+  }
+  zle -N fzf-tmux-session
+  bindkey '^t' fzf-tmux-session
+
   # Allow Ctrl-z to toggle between suspend and resume
   function Resume {
     fg
