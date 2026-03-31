@@ -17,6 +17,7 @@ cursor-shape.select = "underline"
 
 [keys.normal]
 C-y = "scroll_up"
+C-e = "scroll_down"
 D   = "kill_to_line_end"
 x = "extend_line_below"
 X = "extend_line_above"
