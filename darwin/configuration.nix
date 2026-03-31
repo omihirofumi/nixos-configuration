@@ -47,7 +47,8 @@
       "deskpad" "ghostty" "homerow" "linear-linear" "raindropio"
       "raycast" "karabiner-elements" "google-chrome" "chatgpt"
     ];
-    brews = [ "mole" ];
+    taps = [ "k1low/tap" ];
+    brews = [ "mole" "k1low/tap/mo" ];
   };
 
   environment.systemPackages = with pkgs; [
