@@ -3,8 +3,16 @@
   programs.tmux = {
     enable = true;
     prefix = "C-j";
-    mouse = true;
+    # mouse = true;
     extraConfig = ''
+      # plugin
+      set -g @plugin 'tmux-plugins/tpm'
+      set -g @plugin 'tmux-plugins/tmux-resurrect'
+      set -g @plugin 'tmux-plugins/tmux-continuum'
+
+      # session auto save/restore disk
+      set -g @continuum-restore 'on'
+
       # ウィンドウ名の自動変更を無効化
       set-option -g allow-rename off
 
@@ -36,6 +44,14 @@
       set -ga terminal-overrides ",*:Tc"
       set -g window-style "bg=default"
       set -g window-active-style "bg=default"
+
+      set -g display-panes-time 3000
+
+      # for ai agent(ref: https://boristane.com/blog/how-i-use-claude-code/)
+      bind-key e display-panes "send-keys -t %% \"I added a few notes to the document, address all the notes and update the document accordingly. don't implement yet\" Enter"
+
+      # 最後に記述(MUST)
+      run '~/.tmux/plugins/tpm/tpm'
     '';
   };
 }
