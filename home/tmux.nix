@@ -49,6 +49,7 @@
 
       # for ai agent(ref: https://boristane.com/blog/how-i-use-claude-code/)
       bind-key e display-panes "send-keys -t %% \"I added a few notes to the document, address all the notes and update the document accordingly. don't implement yet\" Enter"
+      bind-key i display-panes "send-keys -t %% \"implement it all. when you're done with a task or phase, mark it as completed in the plan document. do not stop until all tasks and phases are completed.\" Enter"
 
       # 最後に記述(MUST)
       run '~/.tmux/plugins/tpm/tpm'
