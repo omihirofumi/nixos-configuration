@@ -123,9 +123,6 @@ in
 
 ${zshFunctions}
 
-      ######## local binaries / external managed paths ########
-      alias claude="$HOME/.local/bin/claude"
-
       # Rancher Desktop（外部が管理するので存在時のみ）
       if [ -d "$HOME/.rd/bin" ]; then
         export PATH="$HOME/.rd/bin:$PATH"
