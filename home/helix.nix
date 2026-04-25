@@ -4,7 +4,7 @@ let
 
   hxNgserverNix = pkgs.writeShellScriptBin "hx-ngserver-nix" ''
     set -euo pipefail
-    ts_probe="${pkgs.nodePackages.typescript}/lib/node_modules"
+    ts_probe="${pkgs.typescript}/lib/node_modules"
     ng_probe="${pkgs.angular-language-server}/lib/node_modules"
     if [ ! -d "$ng_probe" ]; then
       ng_probe="."
@@ -19,7 +19,7 @@ let
 
   hxTslsNix = pkgs.writeShellScriptBin "hx-typescript-language-server-nix" ''
     set -euo pipefail
-    export NODE_PATH="${pkgs.nodePackages.typescript}/lib/node_modules''${NODE_PATH:+:$NODE_PATH}"
+    export NODE_PATH="${pkgs.typescript}/lib/node_modules''${NODE_PATH:+:$NODE_PATH}"
     exec ${pkgs.typescript-language-server}/bin/typescript-language-server --stdio "$@"
   '';
 
@@ -66,7 +66,7 @@ in
     angular-language-server
     typescript-language-server
     vscode-langservers-extracted
-    nodePackages.typescript
+    typescript
     hxNgserverNix
     hxTslsNix
   ];
