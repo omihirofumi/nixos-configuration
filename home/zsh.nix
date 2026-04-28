@@ -29,6 +29,10 @@ in
       ll = "eza -la";
     };
 
+    sessionVariables = {
+      DOCKER_HOST = "unix:///\${HOME}/.rd/docker.sock";
+    };
+
     initContent = ''
       ######## PATH ###########
       export PATH="$HOME/.cargo/bin:$PATH"
