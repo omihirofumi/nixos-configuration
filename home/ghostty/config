@@ -23,5 +23,9 @@ keybind = cmd+j=goto_split:bottom
 keybind = cmd+k=goto_split:top
 keybind = cmd+l=goto_split:right
 
+# codex(v0.128.0)でshift+enterが効かなくなったので
+keybind = shift+enter=text:\x0a
+
 window-save-state = always
 window-new-tab-position = end
+
